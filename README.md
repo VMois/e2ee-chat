@@ -1,2 +1,5 @@
-# e2ee-chat-tutorial
-E2EE chat tutorial using NestJS and ReactJS (+ Redux)
+# E2EE chat tutorial
+E2E Encrypted chat using NestJS and ReactJS (+ Redux).
+
+## Description
+Coming soon...
