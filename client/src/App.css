@@ -1,28 +1,36 @@
-.App {
-  text-align: center;
+.green-background {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: green;
+  opacity: 0.8;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+.intro {
+  position: absolute;
   color: white;
+  width: 50%;
+  left: 25%;
+  top: 25%;
+  height: 50%;
+  text-align: center;
+  display: inline-block;
 }
 
-.App-title {
+.intro h1 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.intro a {
+  text-decoration: none;
   font-size: 1.5em;
+  margin: 0.5em;
+  font-weight: bold;
+  color:white;
 }
 
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.intro a:hover {
+  color: red;
 }
