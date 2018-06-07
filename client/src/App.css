@@ -34,3 +34,17 @@
 .intro a:hover {
   color: red;
 }
+
+.error-line {
+  color:white;
+  background-color: red;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.success-line {
+  color: white;
+  background-color: green;
+  text-align: center;
+  font-size: 1.2em;
+}

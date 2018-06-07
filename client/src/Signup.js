@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import {convertStringToArrayBuffer } from './utils';
+import { 
+    generateRSAKeys, 
+    deriveKeyFromPassword,
+    exportPublicKey,
+    wrapPrivateKey,
+    sha512,
+    exportPrivateKeyInPEMFormat,
+    exportPublicKeyInPEMFormat,
+} from './crypto';
+import { convertStringToArrayBuffer } from './utils';
 
 export class Signup extends Component {
     constructor(props) {
@@ -8,6 +17,8 @@ export class Signup extends Component {
             username: '',
             account_password: '',
             key_password: '',
+            error: '',
+            success: '',
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,8 +32,41 @@ export class Signup extends Component {
     }
 
     handleSubmit(event) {
-        // here we will generate and prepare 
-        // our data before sending to server
+        this.setState({ success: '', error: ''});
+
+        const keyPassword = this.state.key_password;
+        const accountPassword = this.state.account_password;
+        const username = this.state.username;
+        generateRSAKeys.then(async (key) => {
+            const pubKey = key.publicKey;
+            const privKey = key.privateKey;
+
+            // create AES key
+            const hashedPassword = await sha512(keyPassword);
+            const salt = hashedPassword.substr(0, 64);
+            const aesKey = await deriveKeyFromPassword(keyPassword, salt);
+
+            const iv = new Uint8Array(convertStringToArrayBuffer(hashedPassword.substr(64)));
+            const encryptedPrivateKey = await wrapPrivateKey(privKey, aesKey, iv);
+
+            const exportedPubKey = await exportPublicKey(pubKey);
+            const privateKeyPEM = exportPrivateKeyInPEMFormat(encryptedPrivateKey);
+            const publicKeyPEM = exportPublicKeyInPEMFormat(exportedPubKey);
+
+            const formData = new FormData();
+            formData.append('username',  username);
+            formData.append('accountPassword', accountPassword);
+            formData.append('privateKey', privateKeyPEM);
+            formData.append('publicKey', publicKeyPEM);
+
+            const response = await fetch('http://localhost:3000/', {
+                method: 'POST',
+                body: formData,
+            });
+            if (response.ok) this.setState({ success: 'Success! Now you can log in.'})
+            else this.setState({error: 'Something wrong happened!'});
+        })
+        .catch((err) => console.error(err));
         event.preventDefault();
     }
 
@@ -30,6 +74,8 @@ export class Signup extends Component {
      return (
         <div className='green-background'>
             <div className='form-page'>
+                <span className='error-line'>{this.state.error}</span>
+                <span className='success-line'>{this.state.success}</span>
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         Username:
