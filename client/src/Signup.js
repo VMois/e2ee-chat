@@ -53,18 +53,23 @@ export class Signup extends Component {
             const privateKeyPEM = exportPrivateKeyInPEMFormat(encryptedPrivateKey);
             const publicKeyPEM = exportPublicKeyInPEMFormat(exportedPubKey);
 
-            const formData = new FormData();
-            formData.append('username',  username);
-            formData.append('accountPassword', accountPassword);
-            formData.append('privateKey', privateKeyPEM);
-            formData.append('publicKey', publicKeyPEM);
+            const data = {
+                username,
+                accountPassword,
+                privateKey: privateKeyPEM,
+                publicKey: publicKeyPEM,
+            }
 
-            const response = await fetch('http://localhost:3000/', {
+            const response = await fetch('http://localhost:3001/api/users/signup', {
                 method: 'POST',
-                body: formData,
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
             });
             if (response.ok) this.setState({ success: 'Success! Now you can log in.'})
-            else this.setState({error: 'Something wrong happened!'});
+            else this.setState({ error: 'Something wrong happened!' });
         })
         .catch((err) => console.error(err));
         event.preventDefault();
