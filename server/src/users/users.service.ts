@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class UsersService {
@@ -8,8 +9,14 @@ export class UsersService {
     private globalIndex: number = 1;
 
     signup(user: CreateUserDto) {
+        // for tutorial purpose, better use bcrypt :)
+        const hash = createHash('sha512');
+        hash.update(user.accountPassword);
         const newUser: User = {
-            ...user,
+            username: user.username,
+            accountPassword: hash.digest('hex'),
+            privateKey: user.privateKey,
+            publicKey: user.publicKey,
             id: this.globalIndex,
         };
         this.users.push(newUser);
