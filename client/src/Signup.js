@@ -78,24 +78,41 @@ export class Signup extends Component {
     render() {
      return (
         <div className='green-background'>
-            <div className='form-page'>
-                <span className='error-line'>{this.state.error}</span>
-                <span className='success-line'>{this.state.success}</span>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Username:
-                        <input type='text' name='username' value={this.state.username} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                        Account password:
-                        <input type='password' name='account_password' value={this.state.account_password} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                        Key password:
-                        <input type='password' name='key_password' value={this.state.key_password} onChange={this.handleChange} />
-                    </label>
-                    <input type='submit' value='Sign up' />
-                </form>
+            <div className='container-fluid h-100'>
+                <div className='row h-100'>
+                    <div className='col-md-6 mx-auto align-self-center'>
+                        <div className='card card-body'>
+                            <h3 className='text-center mb-4'>Sign-up</h3>
+                            <form onSubmit={this.handleSubmit}>
+                                {this.state.error &&
+                                    <div className='alert alert-danger' role='alert'>
+                                        {this.state.error}
+                                    </div>
+                                }
+                                {this.state.success &&
+                                    <div className='alert alert-success' role='alert'>
+                                        {this.state.success}
+                                    </div>
+                                }
+                                <div className="form-group">
+                                    <label> Username:</label>
+                                    <input type='text' className='form-control' name='username' value={this.state.username} onChange={this.handleChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label>Account password:</label>
+                                    <input type='password' className='form-control' name='account_password' value={this.state.account_password} onChange={this.handleChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label>Key password:</label>
+                                    <input type='password' className='form-control' name='key_password' value={this.state.key_password} onChange={this.handleChange} />
+                                </div>
+                                <div className="form-group">
+                                    <input type='submit' className='btn btn-lg btn-primary btn-block' value='Sign up' />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
      );
