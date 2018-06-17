@@ -11,27 +11,23 @@ import {
 import { convertStringToArrayBuffer } from './utils';
 
 export class Signup extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            account_password: '',
-            key_password: '',
-            error: '',
-            success: '',
-        };
+    state = { 
+        username: '', 
+        account_password: '', 
+        key_password: '',
 
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        // for simple UX later 
+        error: '', 
+        success: '', 
     }
 
-    handleChange(event) {
+    handleChange = (event) => {
         const object = {};
         object[event.target.name] = event.target.value;
         this.setState(object);
     }
 
-    handleSubmit(event) {
+    handleSubmit = (event) => {
         this.setState({ success: '', error: ''});
 
         const keyPassword = this.state.key_password;
@@ -60,16 +56,21 @@ export class Signup extends Component {
                 publicKey: publicKeyPEM,
             }
 
-            const response = await fetch('http://localhost:3001/api/users/signup', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            });
-            if (response.ok) this.setState({ success: 'Success! Now you can log in.'})
-            else this.setState({ error: 'Something wrong happened!' });
+            try {
+                const response = await fetch('http://localhost:3001/api/users/signup', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                });
+                if (response.ok) this.setState({ success: 'Success! Now you can log in.'})
+                else this.setState({ error: 'Something wrong happened!' });
+            } catch(err) {
+                console.error(err);
+                this.setState({ error: err.message });
+            }
         })
         .catch((err) => console.error(err));
         event.preventDefault();
