@@ -38,7 +38,7 @@ export class Signup extends Component {
             const privKey = key.privateKey;
 
             // create AES key
-            const hashedPassword = await sha512(keyPassword);
+            const hashedPassword = await sha512(keyPassword + username);
             const salt = hashedPassword.substr(0, 64);
             const aesKey = await deriveKeyFromPassword(keyPassword, salt);
 

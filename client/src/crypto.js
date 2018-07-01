@@ -29,7 +29,7 @@ export const deriveKeyFromPassword = async (password, salt) => {
         {
             name: 'PBKDF2',
             salt: convertStringToArrayBuffer(salt),
-            iterations: 100000,
+            iterations: 200000,
             hash: 'SHA-512',
         },
         importedPassword,
