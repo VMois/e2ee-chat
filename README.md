@@ -1,5 +1,9 @@
-# E2EE chat tutorial
-E2E Encrypted chat using NestJS and ReactJS.
+# E2EE chat
+E2E Encrypted chat learning project using NestJS and ReactJS.
+
+My programming journey:
+
+- [part 1](https://vmois.github.io/e2e-encrypted-chat-part-1/)
 
 ## Structure
 - **client** (ReactJS, generated with create-react-app)
