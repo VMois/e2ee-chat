@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Controller, Post, Body, BadRequestException, HttpCode } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -13,7 +13,14 @@ export class UsersController {
     }
 
     @Post('login')
-    login(@Body() loginUserDto: LoginUserDto, @Res() res) {
-        //this.usersService.signup(createUserDto);
+    @HttpCode(200)
+    async login(@Body() loginUserDto: LoginUserDto) {
+        const token = await this.usersService.login(loginUserDto);
+        if (token) {
+            return {
+                token,
+            };
+        }
+        throw new BadRequestException();
     }
 }
